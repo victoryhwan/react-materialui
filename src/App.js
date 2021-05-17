@@ -7,6 +7,7 @@ import SimpleCard from "./SimpleCard";
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Route from "react-router-dom/Route";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  }
 }));
 
 function App() {
@@ -25,7 +34,7 @@ function App() {
   return (
     <div>
       <NavBar/>
-
+      <div className={classes.drawerHeader} />
         <Route exact path="/">
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -72,6 +81,21 @@ function App() {
               </Paper>
             </Grid>
           </Grid>
+        </Route>
+        <Route path="/button">
+          <Button variant="contained">Default</Button>
+          <Button variant="contained" color="primary">
+            Primary
+          </Button>
+          <Button variant="contained" color="secondary">
+            Secondary
+          </Button>
+          <Button variant="contained" disabled>
+            Disabled
+          </Button>
+          <Button variant="contained" color="primary" href="#contained-buttons">
+            Link
+          </Button>
         </Route>
     </div>
   );

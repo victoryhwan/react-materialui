@@ -143,7 +143,7 @@ function NavBar() {
           <List>
             {[{name:'All mail', link:'/'}, {name:'Trash', link:'/detail'}, {name:'Spam33', link:'detail'}].map((item, index) => (
               <ListItem button key={index} onClick={()=>{ window.location.assign(item.link); }}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
                 <ListItemText primary={item.name} />
               </ListItem>
             ))}
