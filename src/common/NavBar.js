@@ -13,15 +13,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import MailIcon from '@material-ui/icons/Mail';
+// import Button from '@material-ui/core/Button';
 // import { NavigateBeforeRounded } from '@material-ui/icons';
-import { Link, Route, Switch } from "react-router-dom";
+// import { Link, Route, Switch } from "react-router-dom";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -77,6 +80,12 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
+  nested: {
+    paddingLeft: theme.spacing(4)
+  },
+  listItemText:{
+    fontSize:'0.85rem',
+  }
 }));
 
 function NavBar() {
@@ -84,14 +93,50 @@ function NavBar() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
   
+    let sideMenuList = [{ name:'Home',
+                          subMenuList: [{ name:'Home', 
+                                          link:'/'
+                                        }, 
+                                        { name:'Detail', 
+                                          link:'/detail'
+                                        }, 
+                                        { name:'ButtonSample', 
+                                          link:'/button'}, 
+                                        { name:'MarkDown', 
+                                          link:'/markdown'}]
+                        }, 
+                        { name:'Detail',
+                          subMenuList: []
+                        }, 
+                        { name:'ButtonSample',
+                          subMenuList: [{ name:'Home', 
+                                          link:'/'
+                                        }, 
+                                        { name:'Detail', 
+                                          link:'/detail'
+                                        }, 
+                                        { name:'ButtonSample', 
+                                          link:'/button'}]}]
+
+    const [sideMenuOpenList, setSideMenuOpenList] = React.useState([false, false, false]);                          
+
+    //사이드메뉴 오픈
     const handleDrawerOpen = () => {
       setOpen(true);
     };
   
+    //사이드메뉴 클로즈
     const handleDrawerClose = () => {
       setOpen(false);
     };
-  
+
+    //하위메뉴 펼치기/접기 제어
+    const sideMenuListClick = (idx) => {
+      let tempList = {...sideMenuOpenList};
+      tempList[idx] = !tempList[idx]
+      setSideMenuOpenList(tempList);
+    }
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -103,7 +148,7 @@ function NavBar() {
         >
           <Toolbar>
             <IconButton
-              color="inherit"
+              color="default"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
@@ -111,8 +156,8 @@ function NavBar() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
-              Persistent drawer
+            <Typography variant="h6" noWrap onClick={()=>{window.location.assign('/');}}>
+              Victoryhwan Blog
             </Typography>
           </Toolbar>
         </AppBar>
@@ -132,53 +177,36 @@ function NavBar() {
           </div>
           <Divider />
           <List>
+            {sideMenuList.map((item, index) => (
+              <div key={index}>
+                <ListItem button key={index} onClick={()=>{sideMenuListClick(index)}} >
+                  <ListItemText primary={item.name} />
+                  {sideMenuOpenList[index] ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+                {/* 서브메뉴 */}
+                <Collapse in={sideMenuOpenList[index]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                  {item.subMenuList.map((subItem, idx) => (
+                    <ListItem button key={idx} className={classes.nested} onClick={()=>{ window.location.assign(subItem.link); }}>
+                      <ListItemText classes={{primary:classes.listItemText}} primary={subItem.name}/>
+                    </ListItem>
+                  ))}
+                    </List>
+                </Collapse>
+              </div>
+            ))}
+          </List>
+          {/* <Divider />
+          <List>
             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             ))}
-          </List>
-          <Divider />
-          <List>
-            {[{name:'All mail', link:'/'}, {name:'Trash', link:'/detail'}, {name:'Spam33', link:'detail'}].map((item, index) => (
-              <ListItem button key={index} onClick={()=>{ window.location.assign(item.link); }}>
-                {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                <ListItemText primary={item.name} />
-              </ListItem>
-            ))}
-          </List>
+          </List> */}
         </Drawer>
-        {/* <main
-          className={clsx(classes.content, {
-            [classes.contentShift]: open,
-          })}
-        >
-          <div className={classes.drawerHeader} />
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-            facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-            gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-            donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-            adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-            Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-            imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-            arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-          </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-            facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-            tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-            consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-            vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-            hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-            tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-            nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-          </Typography>
-        </main> */}
       </div>
     );
 }

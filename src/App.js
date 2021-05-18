@@ -1,14 +1,16 @@
+// eslint-disable-next-line
 // import logo from './logo.svg';
 import React from 'react';
 // import clsx from 'clsx';
 
-import NavBar from "./NavBar";
-import SimpleCard from "./SimpleCard";
+// import NavBar from "./NavBar";
+import NavBar from "./common/NavBar";
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Route from "react-router-dom/Route";
+import {Route} from "react-router-dom";
+import Home from "./view/Home";
+import Detail from "./view/Detail";
+import ButtonSample from "./view/ButtonSample";
+import MarkDown from "./view/MarkDown";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,68 +37,10 @@ function App() {
     <div>
       <NavBar/>
       <div className={classes.drawerHeader} />
-        <Route exact path="/">
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>xs=12 home</Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper}>xs=12 sm=6</Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper}>xs=12 sm=6</Paper>
-            </Grid>
-          </Grid>
-        </Route>
-        <Route path="/detail">
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>xs=12
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper}>xs=12 sm=6</Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper className={classes.paper}>xs=12 sm=6</Paper>
-            </Grid>
-            <Grid item xs={40} sm={3}>
-              <Paper className={classes.paper}>xs=6 sm=3
-                <SimpleCard></SimpleCard>
-              </Paper>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper}>xs=6 sm=3
-                <SimpleCard></SimpleCard>
-              </Paper>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper}>xs=6 sm=3
-                <SimpleCard></SimpleCard>
-              </Paper>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Paper className={classes.paper}>xs=6 sm=3
-                <SimpleCard></SimpleCard>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Route>
-        <Route path="/button">
-          <Button variant="contained">Default</Button>
-          <Button variant="contained" color="primary">
-            Primary
-          </Button>
-          <Button variant="contained" color="secondary">
-            Secondary
-          </Button>
-          <Button variant="contained" disabled>
-            Disabled
-          </Button>
-          <Button variant="contained" color="primary" href="#contained-buttons">
-            Link
-          </Button>
-        </Route>
+        <Route exact path="/" component={Home} />
+        <Route path="/detail" component={Detail} />
+        <Route path="/button" component={ButtonSample}/>
+        <Route path="/markdown" component={MarkDown}/>
     </div>
   );
 }
